@@ -137,21 +137,20 @@ const Skills = () => {
       </div>
 
       {/* Floating icons */}
-      <div className="mt-16 py-8">
-        <div className="flex justify-center flex-wrap gap-6 max-w-4xl mx-auto">
+      <div className="mt-16 py-8 overflow-hidden">
+        <div className="flex justify-center flex-wrap gap-8 max-w-5xl mx-auto px-8">
           {['⚛️', '🔥', '⚡', '🎨', '🚀', '💡', '🔧', '📱'].map((icon, index) => (
             <div
               key={index}
-              className={`text-4xl transition-all duration-1000 hover:scale-125 hover:-translate-y-3 cursor-pointer glass-card p-4 rounded-full backdrop-blur-sm border border-white/10 ${
+              className={`text-4xl transition-all duration-700 ease-out hover:scale-110 hover:-translate-y-2 cursor-pointer p-5 rounded-2xl backdrop-blur-md bg-background/5 border border-primary/10 hover:border-primary/30 hover:bg-background/10 ${
                 isVisible 
-                  ? 'opacity-80 translate-y-0' 
+                  ? 'opacity-90 translate-y-0' 
                   : 'opacity-0 translate-y-10'
               }`}
               style={{ 
-                transitionDelay: `${index * 100}ms`,
-                animation: isVisible ? `float 3s ease-in-out infinite ${index * 0.5}s` : 'none',
-                background: 'rgba(255, 255, 255, 0.05)',
-                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)'
+                transitionDelay: `${index * 150}ms`,
+                transform: isVisible ? `translateY(${Math.sin(index * 0.5) * 8}px)` : 'translateY(40px)',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)'
               }}
             >
               {icon}

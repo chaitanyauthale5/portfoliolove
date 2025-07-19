@@ -99,7 +99,7 @@ const Hero = () => {
             <a
               key={label}
               href={href}
-              className="text-muted-foreground hover:text-primary transition-all duration-300 hover:scale-110 hover:-translate-y-2 pulse-glow p-3 rounded-full glass-card"
+              className="text-muted-foreground/80 hover:text-primary transition-all duration-500 ease-out hover:scale-110 hover:-translate-y-2 p-4 rounded-full backdrop-blur-md bg-background/10 border border-primary/20 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/25"
               aria-label={label}
             >
               <Icon size={24} />
