@@ -137,23 +137,27 @@ const Skills = () => {
       </div>
 
       {/* Floating icons */}
-      <div className="mt-16 flex justify-center space-x-8 overflow-hidden">
-        {['⚛️', '🔥', '⚡', '🎨', '🚀', '💡', '🔧', '📱'].map((icon, index) => (
-          <div
-            key={index}
-            className={`text-3xl transition-all duration-1000 hover:scale-125 cursor-pointer ${
-              isVisible 
-                ? 'opacity-70 translate-y-0' 
-                : 'opacity-0 translate-y-10'
-            }`}
-            style={{ 
-              transitionDelay: `${index * 100}ms`,
-              animation: isVisible ? `float 3s ease-in-out infinite ${index * 0.5}s` : 'none'
-            }}
-          >
-            {icon}
-          </div>
-        ))}
+      <div className="mt-16 py-8">
+        <div className="flex justify-center flex-wrap gap-6 max-w-4xl mx-auto">
+          {['⚛️', '🔥', '⚡', '🎨', '🚀', '💡', '🔧', '📱'].map((icon, index) => (
+            <div
+              key={index}
+              className={`text-4xl transition-all duration-1000 hover:scale-125 hover:-translate-y-3 cursor-pointer glass-card p-4 rounded-full backdrop-blur-sm border border-white/10 ${
+                isVisible 
+                  ? 'opacity-80 translate-y-0' 
+                  : 'opacity-0 translate-y-10'
+              }`}
+              style={{ 
+                transitionDelay: `${index * 100}ms`,
+                animation: isVisible ? `float 3s ease-in-out infinite ${index * 0.5}s` : 'none',
+                background: 'rgba(255, 255, 255, 0.05)',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)'
+              }}
+            >
+              {icon}
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ChevronDown, Github, Linkedin, Mail } from 'lucide-react';
+import { ChevronDown, Github, Linkedin, Mail, Instagram, Facebook } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const Hero = () => {
@@ -78,6 +78,9 @@ const Hero = () => {
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
           <Button className="glow-button bg-gradient-primary hover:scale-105 text-primary-foreground px-8 py-3 text-lg">
+            Download Resume
+          </Button>
+          <Button className="glow-button bg-gradient-primary hover:scale-105 text-primary-foreground px-8 py-3 text-lg">
             View My Work
           </Button>
           <Button variant="outline" className="glass-card hover:bg-muted/20 px-8 py-3 text-lg">
@@ -89,12 +92,14 @@ const Hero = () => {
           {[
             { icon: Github, href: '#', label: 'GitHub' },
             { icon: Linkedin, href: '#', label: 'LinkedIn' },
+            { icon: Instagram, href: '#', label: 'Instagram' },
+            { icon: Facebook, href: '#', label: 'Facebook' },
             { icon: Mail, href: '#contact', label: 'Email' },
           ].map(({ icon: Icon, href, label }) => (
             <a
               key={label}
               href={href}
-              className="text-muted-foreground hover:text-primary transition-all duration-300 hover:scale-110 pulse-glow"
+              className="text-muted-foreground hover:text-primary transition-all duration-300 hover:scale-110 hover:-translate-y-2 pulse-glow p-3 rounded-full glass-card"
               aria-label={label}
             >
               <Icon size={24} />
