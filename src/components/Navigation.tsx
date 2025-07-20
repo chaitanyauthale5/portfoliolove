@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import '../styles/navbar-enhance.css';
+
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,7 +30,11 @@ const Navigation = () => {
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
-          <div className="text-2xl font-bold gradient-text">Portfolio</div>
+          <img
+            src="/logo.jpg"
+            alt="Logo"
+            className="navbar-logo h-12 sm:h-14 md:h-16 lg:h-20 w-auto object-contain select-none"
+          />
           
           {/* Desktop Navigation */}
           <div className="hidden md:flex space-x-8">
@@ -36,7 +42,7 @@ const Navigation = () => {
               <a
                 key={item.name}
                 href={item.href}
-                className="text-foreground hover:text-primary transition-colors duration-300 relative group"
+                className="text-foreground hover:text-primary transition-colors duration-300 relative group nav-link-animated"
               >
                 {item.name}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-primary transition-all duration-300 group-hover:w-full"></span>

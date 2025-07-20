@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import { Send, Mail, Phone, MapPin, Github, Linkedin, Twitter } from 'lucide-react';
+import emailjs from '@emailjs/browser';
+import { Send, Mail, Phone, MapPin, Github, Linkedin, Twitter, X, Instagram } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -39,15 +40,30 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    toast({
-      title: "Message sent!",
-      description: "Thank you for your message. I'll get back to you soon!",
-    });
-
-    setFormData({ name: '', email: '', subject: '', message: '' });
+    try {
+      await emailjs.send(
+        'service_h7yxoen', // Service ID
+        'template_kac78xp', // Template ID
+        {
+          name: formData.name,
+          email: formData.email,
+          title: formData.subject, // send as 'title' to match template
+          message: formData.message,
+        },
+        'bBAhqKzSho14wcGUh'
+      );
+      toast({
+        title: "Message sent!",
+        description: "Thank you for your message. I'll get back to you soon!",
+      });
+      setFormData({ name: '', email: '', subject: '', message: '' });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    }
     setIsSubmitting(false);
   };
 
@@ -62,27 +78,29 @@ const Contact = () => {
     {
       icon: Mail,
       title: 'Email',
-      value: 'alex.chen@example.com',
-      href: 'mailto:alex.chen@example.com',
+      value: 'chaitanyauthale5@gmail.com',
+      href: 'chaitanyauthale5@gmail.com',
     },
     {
       icon: Phone,
       title: 'Phone',
-      value: '+1 (555) 123-4567',
-      href: 'tel:+15551234567',
+      value: '+91 7558593244',
+      href: 'tel:+91 7558593244',
     },
     {
       icon: MapPin,
       title: 'Location',
-      value: 'San Francisco, CA',
+      value: 'Kolhapur, Maharashtra',
       href: '#',
     },
   ];
 
   const socialLinks = [
-    { icon: Github, href: '#', label: 'GitHub' },
-    { icon: Linkedin, href: '#', label: 'LinkedIn' },
-    { icon: Twitter, href: '#', label: 'Twitter' },
+    { icon: Github, href: 'https://github.com/chaitanyauthale5', target: 'new', label: 'GitHub' },
+    { icon: Linkedin, href: 'https://linkedin.com/in/chaitanya-uthale', target: '_blank', label: 'LinkedIn' },
+    { icon: X, href: 'https://x.com/ChaitanyaUthale', target: '_blank', label: 'X' },
+    { icon: Instagram, href: 'https://instagram.com/chaitanyauthale5', target: '_blank', label: 'Instagram' },
+    { icon: Mail, href: 'mailto:chaitanyauthale5@gmail.com', target: '_blank', label: 'Email' },
   ];
 
   return (

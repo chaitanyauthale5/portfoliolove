@@ -1,0 +1,34 @@
+/* Animated gradient background for body */
+body {
+  background: linear-gradient(-45deg, #1e1e60, #2e085f, #0f2027, #2c5364);
+  background-size: 400% 400%;
+  animation: gradientBG 18s ease infinite;
+}
+
+@keyframes gradientBG {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
+}
+
+/* Back to top button base styles */
+.back-to-top {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 2rem;
+  z-index: 50;
+  background: rgba(30,30,96,0.85);
+  color: #fff;
+  border-radius: 9999px;
+  padding: 0.7rem 1.2rem;
+  box-shadow: 0 2px 12px 0 #38bdf855;
+  opacity: 0.85;
+  transition: opacity 0.2s, transform 0.2s;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1.15rem;
+}
+.back-to-top:hover {
+  opacity: 1;
+  transform: scale(1.08) translateY(-4px);
+}
