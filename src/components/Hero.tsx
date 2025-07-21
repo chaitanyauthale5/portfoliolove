@@ -52,9 +52,9 @@ const Hero = () => {
       </div>
       <div className="text-center z-10 max-w-4xl mx-auto px-4">
         <div className="float-animation">
-          <h1 className="text-6xl md:text-8xl font-bold mb-6 gradient-text">
-            Chaitanya Uthale
-          </h1>
+          <h1 className="text-4xl md:text-6xl font-bold mb-6 gradient-text">
+  Chaitanya Uthale
+</h1>
           <div className="text-2xl md:text-3xl mb-8 h-12 flex items-center justify-center">
             <span className="text-muted-foreground">I'm a </span>
             <span className="ml-2 text-primary font-semibold transition-all duration-500">
@@ -75,9 +75,16 @@ const Hero = () => {
           Passionate about pushing the boundaries of what's possible on the web.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-        <Button variant="outline" className="glass-card hover:bg-muted/20 px-8 py-3 text-lg">
-            Download Resume
-          </Button>
+        <a
+  href="/resume.pdf"
+  target="_blank"
+  rel="noopener noreferrer"
+  style={{ textDecoration: 'none' }}
+>
+  <Button variant="outline" className="glass-card hover:bg-muted/20 px-8 py-3 text-lg">
+    Download Resume
+  </Button>
+</a>
           <a href="#projects" rel="noopener noreferrer">
               <Button className="glow-button bg-gradient-primary hover:scale-105 text-primary-foreground px-8 py-3 text-lg">
                 View My Work

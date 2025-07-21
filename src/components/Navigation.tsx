@@ -31,10 +31,10 @@ const Navigation = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
           <img
-            src="/logo.jpg"
-            alt="Logo"
-            className="navbar-logo h-12 sm:h-14 md:h-16 lg:h-20 w-auto object-contain select-none"
-          />
+  src="/logo.jpg"
+  alt="Logo"
+  className="navbar-logo h-6 sm:h-8 md:h-10 lg:h-12 w-auto object-contain select-none"
+/>
           
           {/* Desktop Navigation */}
           <div className="hidden md:flex space-x-8">
