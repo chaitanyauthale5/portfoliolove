@@ -102,7 +102,7 @@ const Skills = () => {
   {skillCategories.map((category, categoryIndex) => (
     <div
       key={category.title}
-      className={`glass-card p-6 rounded-xl transition-all duration-1000 ${
+      className={`glass-card p-6 rounded-xl transition-all duration-1000 ease-out ${
         isVisible 
           ? 'opacity-100 translate-y-0' 
           : 'opacity-0 translate-y-10'
@@ -165,13 +165,13 @@ const Skills = () => {
           {['⚛️', '🔥', '⚡', '🐘', '🟦', '🤖', '🧠 ', '📱'].map((icon, index) => (
             <div
               key={index}
-              className={`text-4xl transition-all duration-700 ease-out hover:scale-110 hover:-translate-y-2 cursor-pointer p-5 rounded-2xl backdrop-blur-md bg-background/5 border border-primary/10 hover:border-primary/30 hover:bg-background/10 ${
+              className={`text-4xl transition-all duration-1000 ease-out hover:scale-110 hover:-translate-y-2 cursor-pointer p-5 rounded-2xl backdrop-blur-md bg-background/5 border border-primary/10 hover:border-primary/30 hover:bg-background/10 ${
                 isVisible 
                   ? 'opacity-90 translate-y-0' 
                   : 'opacity-0 translate-y-10'
               }`}
               style={{ 
-                transitionDelay: `${index * 150}ms`,
+                transitionDelay: `${index * 200}ms`,
                 transform: isVisible ? `translateY(${Math.sin(index * 0.5) * 8}px)` : 'translateY(40px)',
                 boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)'
               }}
