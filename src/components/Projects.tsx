@@ -1,103 +1,4 @@
-import { useState, useEffect, useRef, memo } from 'react';
-
-// Helper to generate a seeded random number for deterministic bubbles per card
-function seededRandom(seed: number) {
-  const x = Math.sin(seed) * 10000;
-  return x - Math.floor(x);
-}
-
-// Bubble type
-interface Bubble {
-  left: number;
-  top: number;
-  size: number;
-  speed: number;
-  angle: number;
-  phase: number;
-}
-
-// AnimatedBubbles component
-const AnimatedBubbles = memo(({ bubbleCount, hovered, cardIndex }: { bubbleCount: number; hovered: boolean; cardIndex: number }) => {
-  const [bubbles, setBubbles] = useState<Bubble[]>([]);
-  const bubbleRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const hoverAnim = useRef(1); // 1 = not hovered, 2 = hovered
-  const animating = useRef(true);
-  const positions = useRef<{ x: number; y: number; }[]>([]);
-  const prevTimeRef = useRef<number>();
-
-  // Generate bubbles with fixed random properties on mount
-  useEffect(() => {
-    const newBubbles: Bubble[] = [];
-    for (let i = 0; i < bubbleCount; i++) {
-      const seed = cardIndex * 1000 + i * 17;
-      const left = seededRandom(seed + 1) * 90 + 5;
-      const top = seededRandom(seed + 2) * 80 + 10;
-      const size = seededRandom(seed + 3) * 6 + 2;
-      const speed = seededRandom(seed + 4) * 0.04 + 0.02;
-      const angle = seededRandom(seed + 5) * 2 * Math.PI;
-      const phase = seededRandom(seed + 6) * 2 * Math.PI;
-      newBubbles.push({ left, top, size, speed, angle, phase });
-    }
-    setBubbles(newBubbles);
-    positions.current = newBubbles.map(b => ({ x: b.left, y: b.top }));
-  }, [bubbleCount, cardIndex]);
-
-  // Animate bubbles using refs for smoothness
-  useEffect(() => {
-    animating.current = true;
-    function animate(time: number) {
-      if (!prevTimeRef.current) prevTimeRef.current = time;
-      const dt = time - prevTimeRef.current;
-      prevTimeRef.current = time;
-      // Smoothly interpolate hoverAnim toward target
-      const target = hovered ? 2 : 1;
-      hoverAnim.current += (target - hoverAnim.current) * 0.08;
-      // Animate positions and DOM
-      positions.current = positions.current.map((pos, i) => {
-        const b = bubbles[i];
-        if (!b) return pos;
-        const angle = b.angle + Math.sin(time * 0.0002 + b.phase) * 0.5;
-        let x = pos.x + Math.cos(angle) * b.speed * dt * hoverAnim.current;
-        let y = pos.y + Math.sin(angle) * b.speed * dt * hoverAnim.current;
-        if (x > 100) x = 0;
-        if (x < 0) x = 100;
-        if (y > 100) y = 0;
-        if (y < 0) y = 100;
-        // Update DOM directly
-        const ref = bubbleRefs.current[i];
-        if (ref) {
-          const scale = 1 + 0.1 * (hoverAnim.current - 1);
-          const blur = 1 + 1 * (hoverAnim.current - 1);
-          const brightness = 1 + 0.2 * (hoverAnim.current - 1);
-          ref.style.left = `${x}%`;
-          ref.style.top = `${y}%`;
-          ref.style.width = `${b.size}px`;
-          ref.style.height = `${b.size}px`;
-          ref.style.opacity = '0.8';
-          ref.style.transform = `scale(${scale})`;
-          ref.style.filter = `blur(${blur}px) brightness(${brightness})`;
-          ref.style.transition = 'transform 0.5s cubic-bezier(0.4,0,0.2,1), filter 0.7s cubic-bezier(0.4,0,0.2,1)';
-        }
-        return { x, y };
-      });
-      if (animating.current) requestAnimationFrame(animate);
-    }
-    requestAnimationFrame(animate);
-    return () => { animating.current = false; prevTimeRef.current = undefined; };
-  }, [bubbles, hovered]);
-
-  return (
-    <div className="absolute inset-0 opacity-20 pointer-events-none">
-      {bubbles.map((b, i) => (
-        <div
-          key={i}
-          ref={el => bubbleRefs.current[i] = el}
-          className={"absolute rounded-full bg-white"}
-        />
-      ))}
-    </div>
-  );
-});
+import { useState, useEffect, useRef } from 'react';
 import { ExternalLink, Github, Eye } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -106,10 +7,6 @@ const Projects = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
-
-  function GitHub()  {
-    window.open('https://github.com/chaitanyauthale5', '_blank');
-  }
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -130,53 +27,46 @@ const Projects = () => {
 
   const projects = [
     {
-      title: 'Hostel Managment System',
-      description: 'Real-time software solution designed to automate and streamline the daily operations of hostels, student accommodations.',
-      technologies: ['React', 'Node.js', 'PostgreSQL', 'TypeScript', 'Vite'],
-      gradient: 'from-pink-500 to-violet-600',
-      featured: false,
-      repo: 'https://github.com/chaitanyauthale5/hostel',
-    },
-    {
-      title: 'Ecocart',
-      description: 'A modern solution for sustainable e-commerce with personalized recommendations with integrated AI, ML model, OCR, LSTM and much more.',
-      technologies: ['React', 'TypeScript', 'Firebase', 'Python', 'Node.js'],
+      title: 'AI-Powered Dashboard',
+      description: 'A modern analytics dashboard with AI-driven insights, real-time data visualization, and predictive analytics for business intelligence.',
+      technologies: ['React', 'TypeScript', 'D3.js', 'Python', 'TensorFlow'],
       gradient: 'from-blue-500 to-purple-600',
       featured: true,
-      repo: 'https://github.com/chaitanyauthale5/EcoCart',
     },
     {
-      
-      title: 'KIT CDC',
-      description: 'A career development and placement streamlining platform for students which makes easy task for Co-ordinator.',
-      technologies: ['Next.js', 'Node.js', 'Firebase'],
-      gradient: 'from-yellow-500 to-orange-600',
-      featured: false,
-      repo: 'https://github.com/chaitanyauthale5/kit-cdc',
-    },
-    {
-      title: 'Portfolio Website',
-      description: 'Interactive Portfolio showcasing creative coding skills with React, featuring particle systems and immersive user experience.',
-      technologies: ['React.js', 'GitHub', 'CSS', 'TypeScript', 'Vite'],
-      gradient: 'from-orange-500 to-red-600',
-      featured: false,
-      repo: 'https://github.com/chaitanyauthale5/portfolio',
-    },
-    {
-      title: 'Task Manager',
-      description: 'Personalised Task Manager for anybody to use it according to your user needs.',
-      technologies: ['Next.js', 'Node.js', 'Firebase', 'TypeScript', 'Vite'],
+      title: 'E-Commerce Platform',
+      description: 'Full-stack e-commerce solution with advanced features like real-time inventory, payment processing, and personalized recommendations.',
+      technologies: ['Next.js', 'Node.js', 'PostgreSQL', 'Stripe', 'Redis'],
       gradient: 'from-emerald-500 to-teal-600',
       featured: true,
-      repo: 'https://github.com/chaitanyauthale5/task-manager',
     },
     {
-      title: 'Leukaemia classification using ML',
-      description: 'Machine Learning model to check the cancer stage.',
-      technologies: ['Python', 'Node.js', 'React', 'CNN', 'Sklearn'],
+      title: '3D Portfolio Website',
+      description: 'Interactive 3D portfolio showcasing creative coding skills with Three.js, featuring particle systems and immersive user experience.',
+      technologies: ['Three.js', 'WebGL', 'React', 'GLSL', 'Blender'],
+      gradient: 'from-orange-500 to-red-600',
+      featured: false,
+    },
+    {
+      title: 'Social Media App',
+      description: 'Real-time social platform with live messaging, content sharing, and advanced user engagement features.',
+      technologies: ['React Native', 'Firebase', 'WebRTC', 'Node.js'],
+      gradient: 'from-pink-500 to-violet-600',
+      featured: false,
+    },
+    {
+      title: 'Blockchain Wallet',
+      description: 'Secure cryptocurrency wallet with multi-chain support, DeFi integration, and advanced security features.',
+      technologies: ['Web3.js', 'Ethereum', 'Solidity', 'React', 'MetaMask'],
+      gradient: 'from-yellow-500 to-orange-600',
+      featured: false,
+    },
+    {
+      title: 'IoT Monitoring System',
+      description: 'Real-time IoT device monitoring dashboard with data analytics, alerts, and device management capabilities.',
+      technologies: ['React', 'Node.js', 'MQTT', 'InfluxDB', 'Grafana'],
       gradient: 'from-cyan-500 to-blue-600',
       featured: false,
-      repo: 'https://github.com/chaitanyauthale5/Leukemia-Detection-model',
     },
   ];
 
@@ -214,22 +104,36 @@ const Projects = () => {
           >
             <div className={`h-48 bg-gradient-to-br ${project.gradient} relative overflow-hidden`}>
               {/* Animated background pattern */}
-              <AnimatedBubbles bubbleCount={20} hovered={hoveredProject === index} cardIndex={index} />
+              <div className="absolute inset-0 opacity-20">
+                {[...Array(20)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="absolute rounded-full bg-white transition-all duration-1000"
+                    style={{
+                      left: `${Math.random() * 100}%`,
+                      top: `${Math.random() * 100}%`,
+                      width: `${Math.random() * 6 + 2}px`,
+                      height: `${Math.random() * 6 + 2}px`,
+                      transform: hoveredProject === index 
+                        ? `translate(${Math.random() * 20 - 10}px, ${Math.random() * 20 - 10}px)`
+                        : 'translate(0, 0)',
+                    }}
+                  />
+                ))}
+              </div>
               
               {/* Project actions overlay */}
               <div className={`absolute inset-0 bg-black/50 flex items-center justify-center space-x-4 transition-all duration-300 ${
                 hoveredProject === index ? 'opacity-100' : 'opacity-0'
               }`}>
-                <a
-                  href={project.repo}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Button size="sm" variant="outline" className="glass-card">
-                    <Github className="w-4 h-4 mr-2" />
-                    Code
-                  </Button>
-                </a>
+                <Button size="sm" variant="secondary" className="glow-button">
+                  <Eye className="w-4 h-4 mr-2" />
+                  Preview
+                </Button>
+                <Button size="sm" variant="outline" className="glass-card">
+                  <Github className="w-4 h-4 mr-2" />
+                  Code
+                </Button>
               </div>
             </div>
             
@@ -252,13 +156,29 @@ const Projects = () => {
                 ))}
               </div>
               
+              <div className="flex items-center space-x-4 text-sm">
+                <a 
+                  href="#" 
+                  className="text-primary hover:text-primary/80 transition-colors flex items-center"
+                >
+                  <ExternalLink className="w-4 h-4 mr-1" />
+                  Live Demo
+                </a>
+                <a 
+                  href="#" 
+                  className="text-muted-foreground hover:text-foreground transition-colors flex items-center"
+                >
+                  <Github className="w-4 h-4 mr-1" />
+                  Source
+                </a>
+              </div>
             </CardContent>
           </Card>
         ))}
       </div>
 
       <div className="text-center mt-12">
-        <Button variant="outline" className="glow-button glass-card px-8 py-3" onClick={GitHub}>
+        <Button variant="outline" className="glow-button glass-card px-8 py-3">
           <Github className="w-5 h-5 mr-2" />
           View All Projects on GitHub
         </Button>
